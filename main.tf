@@ -8,32 +8,25 @@ terraform {
 
 locals {
   api_name                    = var.api_name
+  chat_method                 = var.chat_method
+  debug                       = var.debug
   kms_key_arn                 = var.kms_key_arn
-  lambda_description          = coalesce(var.lambda_description, "Slack handler for slack.chat.${local.lambda_handler}")
-  lambda_function_name        = coalesce(var.lambda_function_name, "slack-${var.api_name}-chat-${local.lambda_handler}")
-  lambda_handler              = var.lambda_handler
+  lambda_description          = coalesce(var.lambda_description, "Slack handler for slack.chat.${local.chat_method}")
+  lambda_function_name        = coalesce(var.lambda_function_name, "slack-${var.api_name}-chat-${local.chat_method}")
+  lambda_handler              = "index.${local.chat_method}"
   lambda_memory_size          = var.lambda_memory_size
   lambda_tags                 = var.lambda_tags
   lambda_timeout              = var.lambda_timeout
   log_group_retention_in_days = var.log_group_retention_in_days
   log_group_tags              = var.log_group_tags
-  response                    = var.response
-  role_name                   = var.role_name
+  role_arn                    = var.role_arn
   secret_name                 = var.secret_name
-  slackbot_topic              = var.slackbot_topic
+  topic_arn                   = var.topic_arn
 
   filter_policy = {
-    id   = [local.lambda_handler]
+    id   = [local.chat_method]
     type = ["chat"]
   }
-}
-
-data aws_iam_role role {
-  name = local.role_name
-}
-
-data aws_sns_topic topic {
-  name = local.slackbot_topic
 }
 
 resource aws_cloudwatch_log_group logs {
@@ -49,7 +42,7 @@ resource aws_lambda_function lambda {
   handler          = local.lambda_handler
   kms_key_arn      = local.kms_key_arn
   memory_size      = local.lambda_memory_size
-  role             = data.aws_iam_role.role.arn
+  role             = local.role_arn
   runtime          = "nodejs12.x"
   source_code_hash = filebase64sha256("${path.module}/package.zip")
   tags             = local.lambda_tags
@@ -58,7 +51,7 @@ resource aws_lambda_function lambda {
   environment {
     variables = {
       AWS_SECRET = local.secret_name
-      RESPONSE   = local.response
+      DEBUG      = local.debug
     }
   }
 }
@@ -67,12 +60,12 @@ resource aws_lambda_permission invoke {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda.function_name
   principal     = "sns.amazonaws.com"
-  source_arn    = data.aws_sns_topic.topic.arn
+  source_arn    = local.topic_arn
 }
 
 resource aws_sns_topic_subscription subscription {
   endpoint      = aws_lambda_function.lambda.arn
   filter_policy = jsonencode(local.filter_policy)
   protocol      = "lambda"
-  topic_arn     = data.aws_sns_topic.topic.arn
+  topic_arn     = local.topic_arn
 }

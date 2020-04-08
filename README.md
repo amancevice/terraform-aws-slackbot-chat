@@ -10,7 +10,8 @@ module slackbot_chat {
   version        = "~> 0.1"
   api_name       = "<api-gateway-rest-api-name>"
   lambda_handler = "index.postMessage | index.postEphemeral"
-  role_name      = "<iam-role-name>"
+  role_arn       = "<iam-role-arn>"
   secret_name    = "<secretsmanager-secret-name>"
+  topic_arn      = "<sns-topic-arn"
 }
 ```
