@@ -4,23 +4,23 @@ variable api_name {
 
 variable kms_key_arn {
   description = "KMS Key ARN"
-  default     = ""
+  default     = null
 }
 
 variable lambda_description {
   description = "Lambda function description"
-  default     = ""
+  default     = null
 }
 
 variable lambda_function_name {
   description = "Lambda function name"
-  default     = ""
+  default     = null
 }
 
 
 variable lambda_handler {
   description = "Lambda function handler"
-  default     = "postMessage"
+  default     = "index.postMessage"
 }
 
 variable lambda_memory_size {
