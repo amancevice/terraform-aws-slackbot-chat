@@ -22,6 +22,9 @@ default: package-lock.json package.zip
 	--target $* \
 	.
 
+package-lock.json package.zip: .docker/zip
+	docker run --rm --entrypoint cat $$(cat $<) $@ > $@
+
 clean:
 	rm -rf .docker
 
