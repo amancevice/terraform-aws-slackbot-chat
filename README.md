@@ -5,13 +5,20 @@ Generic chat handler for Slack.
 ## Quickstart
 
 ```hcl
-module slackbot_chat {
-  source         = "amancevice/slack-chat/aws"
-  version        = "~> 0.1"
-  api_name       = "<api-gateway-rest-api-name>"
-  lambda_handler = "index.postMessage | index.postEphemeral"
-  role_arn       = "<iam-role-arn>"
+module "slackbot" {
+  source      = "amancevice/slackbot/aws"
+  version     = "~> 18.0"
+  secret_name = "<secretsmanager-secret-name>"
+  # ...
+}
+
+module "slackbot-chat" {
+  source         = "amancevice/slackbot-chat/aws"
+  version        = "~> 1.0"
+  api_name       = module.slackbot.api.name
+  chat_method    = "postMessage | postEphemeral"
+  role_arn       = module.slackbot.role.arn
   secret_name    = "<secretsmanager-secret-name>"
-  topic_arn      = "<sns-topic-arn"
+  topic_arn      = module.slackbot.topic.arn
 }
 ```
