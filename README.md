@@ -5,14 +5,14 @@ Generic chat handler for Slack.
 ## Quickstart
 
 ```hcl
-module "slackbot" {
+module slackbot {
   source      = "amancevice/slackbot/aws"
   version     = "~> 18.0"
   secret_name = "<secretsmanager-secret-name>"
   # ...
 }
 
-module "slackbot-chat" {
+module slackbot_chat {
   source         = "amancevice/slackbot-chat/aws"
   version        = "~> 1.0"
   api_name       = module.slackbot.api.name
