@@ -29,8 +29,8 @@ override.tf.json
 # example: *tfplan*
 
 # module
-**/.docker/
 **/node_modules/
 *.env
+*.iid
 *.zip
 !package.zip
