@@ -11,8 +11,7 @@ Add-on for [amancevice/slackbot/aws](https://github.com/amancevice/terraform-aws
 module slackbot {
   source      = "amancevice/slackbot/aws"
   version     = "~> 18.2"
-  secret_name = "<secretsmanager-secret-name>"
-  # ...
+  # …
 }
 
 module slackbot_chat {
@@ -39,11 +38,11 @@ module slackbot_chat {
   slack_chat_method = "postMessage | postEphemeral"
 
   log_group_tags = {
-    # ...
+    # …
   }
 
   lambda_tags = {
-    # ...
+    # …
   }
 }
 ```
