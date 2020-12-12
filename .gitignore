@@ -33,4 +33,5 @@ override.tf.json
 *.env
 *.iid
 *.zip
+.terraform.lock.hcl
 !package.zip
