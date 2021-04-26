@@ -1,5 +1,7 @@
 # AWS Lambda Slack Chat
 
+> NOTE — THIS MODULE IS DEPRECATED AS OF SLACKBOT v22
+
 [![terraform](https://img.shields.io/github/v/tag/amancevice/terraform-aws-slackbot-chat?color=62f&label=version&logo=terraform&style=flat-square)](https://registry.terraform.io/modules/amancevice/serverless-pypi/aws)
 [![build](https://img.shields.io/github/workflow/status/amancevice/terraform-aws-slackbot-chat/Test?logo=github&style=flat-square)](https://github.com/amancevice/terraform-aws-slackbot-chat/actions)
 
